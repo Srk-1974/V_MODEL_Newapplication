@@ -30,6 +30,7 @@ It provides real-time tracking from requirements definition down to unit impleme
 
 ## 🚀 Getting Started
 
+### Local Launch
 Simply open `index.html` in any web browser:
 
 ```bash
@@ -41,6 +42,15 @@ Or serve via local HTTP server:
 ```bash
 npx serve .
 ```
+
+### Streamlit Cloud Deployment (Public Link)
+This repository is configured with `streamlit_app.py` for 1-click deployment on Streamlit Community Cloud ([share.streamlit.io](https://share.streamlit.io/)):
+
+1. Go to [share.streamlit.io](https://share.streamlit.io/)
+2. Click **"New app"**
+3. Select Repository: `Srk-1974/v-model`
+4. Main file path: `streamlit_app.py`
+5. Click **"Deploy!"**
 
 ---
 
