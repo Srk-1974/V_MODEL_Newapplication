@@ -3,479 +3,703 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AutoVModel — Automotive V Model Framework</title>
-  <meta name="description" content="AI-powered automotive V Model framework guidance tool for development teams. Stage-by-stage visibility into project execution and validation." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <title>V-PATH.AGENT v4.2 — Engineering Compliance & Artifact Tracing</title>
+  <meta name="description" content="Documentation standard and artifact tracing for rigid V-model development process. Serves structured Context Bundles for AI agents." />
+  
+  <!-- Google Fonts: Newsreader (Serif), JetBrains Mono (Monospace), Inter (Sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="extensions.css" />
 </head>
 <body>
-  <!-- Animated background -->
-  <div class="bg-grid"></div>
-  <div class="bg-orbs">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-  </div>
 
-  <!-- Top Navigation -->
-  <nav class="navbar" id="navbar">
-    <div class="nav-brand">
-      <div class="brand-icon">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+  <!-- Top Header Area -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="brand-row">
+        <h1 class="brand-title">V-PATH.AGENT</h1>
+        <span class="version-badge">V4.2</span>
       </div>
-      <div class="brand-titles">
-        <div class="brand-header-row">
-          <span class="brand-name">AutoVModel</span>
-          <span class="brand-tag">v2.0</span>
+      <p class="brand-subtitle">ENGINEERING COMPLIANCE & ARTIFACT TRACING</p>
+    </div>
+
+    <div class="header-right">
+      <!-- Active Project Selector Box -->
+      <div class="project-selector-container">
+        <label class="project-label">ACTIVE PROJECT</label>
+        <div class="project-select-wrapper">
+          <select id="projectSelect" onchange="onProjectChange(this.value)">
+            <option value="insulin">Smart Insulin Infusion Pump (IEC 62304)</option>
+            <option value="aeb">Autonomous Emergency Braking (ISO 26262 ASIL-D)</option>
+            <option value="flybywire">Fly-by-Wire Flight Computer (DO-178C DAL-A)</option>
+            <option value="pacemaker">Cardiac Pacemaker Controller (IEC 62304 / ISO 14971)</option>
+          </select>
+          <button class="btn-icon-add" onclick="openNewProjectModal()" title="Add Custom Project">+</button>
         </div>
-        <span class="brand-byline">Designed by Bhadradri Technologies Inc.</span>
+      </div>
+
+      <!-- Header Status Badges -->
+      <div class="header-badges">
+        <div class="badge-pill compliance-pill" id="complianceBadge">
+          <span class="pill-text">IEC 62304 (CLASS C / CLASS B)</span>
+        </div>
+        <div class="badge-pill trace-pill" id="traceBadge">
+          <span class="pill-text">TRACE <em>100%</em> <small>(48/48)</small></span>
+        </div>
+        <div class="badge-pill model-pill" onclick="openModelSelectModal()" title="Switch AI Agent Model">
+          <span class="status-dot green"></span>
+          <span class="model-name" id="selectedModelName">Gemini 3.7</span>
+          <svg class="chevron-down" viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><path d="M4 6l4 4 4-4H4z"/></svg>
+        </div>
+        <button class="btn-serve-bundle" onclick="openServeBundleModal()">
+          <svg class="chip-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="4" y="4" width="16" height="16" rx="2" />
+            <path d="M9 9h6v6H9z" />
+            <path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3" />
+          </svg>
+          SERVE BUNDLE
+        </button>
       </div>
     </div>
-    <div class="nav-tabs" id="navTabs">
-      <button class="nav-tab active" data-view="dashboard" onclick="switchView('dashboard')">
-        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/></svg>
-        Dashboard
+  </header>
+
+  <!-- Top Navigation Tabs -->
+  <nav class="nav-tabs-bar">
+    <div class="nav-tabs-list">
+      <button class="nav-tab active" data-tab="vmodel" onclick="switchTab('vmodel')">
+        V-Model Diagram
       </button>
-      <button class="nav-tab" data-view="vmodel" onclick="switchView('vmodel')">
-        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
-        V Model
+      <button class="nav-tab" data-tab="bundle" onclick="switchTab('bundle')">
+        Context Bundle Engine
+        <span class="tab-badge red-badge" id="bundleCountBadge">1</span>
       </button>
-      <button class="nav-tab" data-view="traceability" onclick="switchView('traceability')">
-        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z"/></svg>
-        Traceability
+      <button class="nav-tab" data-tab="traceability" onclick="switchTab('traceability')">
+        Traceability Matrix
+        <span class="tab-badge green-badge">100%</span>
       </button>
-      <button class="nav-tab" data-view="timeline" onclick="switchView('timeline')">
-        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/></svg>
-        Timeline
+      <button class="nav-tab" data-tab="sandbox" onclick="switchTab('sandbox')">
+        AI Agent Sandbox
+        <span class="tab-badge dark-badge">SIMULATOR</span>
       </button>
-      <button class="nav-tab" data-view="advisor" onclick="switchView('advisor')">
-        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg>
-        AI Advisor
+      <button class="nav-tab" data-tab="compliance" onclick="switchTab('compliance')">
+        Compliance Audits
       </button>
-      <button class="nav-tab" data-view="defects" onclick="switchView('defects')">
-        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
-        Defects
-        <span class="nav-badge" id="defectNavBadge" style="display:none"></span>
+      <button class="nav-tab" data-tab="help" onclick="switchTab('help')">
+        ? Layman User Guide
       </button>
     </div>
-    <div class="nav-actions">
-      <div class="project-badge" id="projectBadge">
-        <span class="badge-dot"></span>
-        <span id="projectName">No Project</span>
-      </div>
-      <button class="btn-gate" onclick="openGateModal()" id="gateBtn" style="display:none">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1l2 4 4.5.6-3.2 3.2.7 4.5L8 11l-4 2.3.7-4.5L1.5 5.6 6 5z"/></svg>
-        Gate Review
-      </button>
-      <button class="btn-export" onclick="openExportModal()" id="exportBtn" style="display:none">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v8M5 7l3 3 3-3M2 11v1a2 2 0 002 2h8a2 2 0 002-2v-1"/></svg>
-        Export
-      </button>
-      <button class="btn-new-project" onclick="openProjectModal()">
-        + New Project
+    <div class="nav-extra-actions">
+      <button class="btn-outline-sm" onclick="exportAuditReport()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        Export Trace XML/PDF
       </button>
     </div>
   </nav>
 
-  <!-- Main Content -->
-  <main class="main-content">
+  <!-- MAIN CONTENT VIEWS CONTAINER -->
+  <main class="main-views-container">
 
-    <!-- DASHBOARD VIEW -->
-    <section class="view active" id="view-dashboard">
-      <div class="view-header">
-        <div>
-          <h1 class="view-title">Project Dashboard</h1>
-          <p class="view-subtitle">Automotive V Model — Real-time project health & phase tracking</p>
+    <!-- VIEW 1: V-MODEL DIAGRAM (Exact match to uploaded screenshot) -->
+    <section class="tab-view active" id="view-vmodel">
+      <!-- Diagram Banner / Header -->
+      <div class="diagram-header-panel">
+        <div class="dh-left">
+          <div class="section-tag-badge">DECOMPOSITION & VERIFICATION TOPOLOGY</div>
+          <h2 class="section-title-serif">Rigid V-Model Architecture</h2>
+          <p class="section-subtitle-mono">
+            BIDIRECTIONAL ARTIFACT TRACING. HOVER ANY TIER NODE TO ILLUMINATE HORIZONTAL VERIFICATION BRIDGES AND VERTICAL DECOMPOSITION PATHS.
+          </p>
         </div>
-        <div class="header-actions">
-          <div class="phase-indicator" id="dashPhaseIndicator">
-            <span class="pi-label">Current Phase</span>
-            <span class="pi-value" id="dashCurrentPhase">–</span>
-          </div>
+        <div class="dh-right-legend">
+          <button class="legend-btn left-btn" onclick="highlightBranch('left')">
+            <span class="sq-icon">■</span> LEFT: SPECIFICATION
+          </button>
+          <button class="legend-btn vertex-btn" onclick="highlightBranch('vertex')">
+            <span class="sq-icon">■</span> VERTEX: CODE
+          </button>
+          <button class="legend-btn right-btn" onclick="highlightBranch('right')">
+            <span class="sq-icon">■</span> RIGHT: VERIFICATION
+          </button>
         </div>
       </div>
 
-      <!-- KPI Cards -->
-      <div class="kpi-grid">
-        <div class="kpi-card" id="kpi-req">
-          <div class="kpi-icon req-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
-          </div>
-          <div class="kpi-content">
-            <div class="kpi-value" id="kpi-req-val">0%</div>
-            <div class="kpi-label">Req. Coverage</div>
-            <div class="kpi-bar"><div class="kpi-fill" id="kpi-req-bar" style="width:0%"></div></div>
-          </div>
-        </div>
-        <div class="kpi-card" id="kpi-test">
-          <div class="kpi-icon test-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          </div>
-          <div class="kpi-content">
-            <div class="kpi-value" id="kpi-test-val">0%</div>
-            <div class="kpi-label">Test Alignment</div>
-            <div class="kpi-bar"><div class="kpi-fill green" id="kpi-test-bar" style="width:0%"></div></div>
-          </div>
-        </div>
-        <div class="kpi-card" id="kpi-risk">
-          <div class="kpi-icon risk-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-          </div>
-          <div class="kpi-content">
-            <div class="kpi-value" id="kpi-risk-val">–</div>
-            <div class="kpi-label">Risk Level</div>
-            <div class="kpi-sub" id="kpi-risk-sub">No project loaded</div>
-          </div>
-        </div>
-        <div class="kpi-card" id="kpi-phase">
-          <div class="kpi-icon phase-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          </div>
-          <div class="kpi-content">
-            <div class="kpi-value" id="kpi-phase-val">0/8</div>
-            <div class="kpi-label">Phases Complete</div>
-            <div class="kpi-bar"><div class="kpi-fill purple" id="kpi-phase-bar" style="width:0%"></div></div>
-          </div>
-        </div>
-        <div class="kpi-card" id="kpi-defects" style="cursor:pointer" onclick="switchView('defects')">
-          <div class="kpi-icon" style="background:rgba(244,63,94,0.15);color:var(--accent-5)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
-          </div>
-          <div class="kpi-content">
-            <div class="kpi-value" id="kpi-defect-val">0</div>
-            <div class="kpi-label">Open Defects</div>
-            <div class="kpi-sub" id="kpi-defect-sub">0 Critical · 0 Major</div>
-          </div>
-        </div>
-        <div class="kpi-card" id="kpi-gate" style="cursor:pointer" onclick="openGateModal()">
-          <div class="kpi-icon" style="background:rgba(251,146,60,0.15);color:var(--accent-4)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
-          </div>
-          <div class="kpi-content">
-            <div class="kpi-value" id="kpi-gate-val">–</div>
-            <div class="kpi-label">Gate Status</div>
-            <div class="kpi-sub" id="kpi-gate-sub">Click to review</div>
-          </div>
-        </div>
-      </div>
+      <!-- V-Model Interactive Canvas Area -->
+      <div class="vmodel-canvas-wrapper" id="vmodelCanvasWrapper">
+        <svg id="vmodelSvgConnections" class="vmodel-svg-overlay"></svg>
 
-      <!-- V Model Mini + Phase Cards -->
-      <div class="dash-body">
-        <div class="dash-left">
-          <!-- Radar Chart Card -->
-          <div class="card radar-card">
-            <div class="card-header">
-              <h3>Phase Health Radar</h3>
-              <span class="card-tag">Live</span>
-            </div>
-            <div class="radar-wrap">
-              <canvas id="radarChart" width="300" height="260"></canvas>
-              <div class="radar-legend" id="radarLegend"></div>
-            </div>
-          </div>
-
-          <!-- Mini V Model -->
-          <div class="card mini-vmodel-card">
-            <div class="card-header">
-              <h3>V Model Progress</h3>
-              <button class="btn-text" onclick="openGateModal()" id="gateQuickBtn" style="display:none">Gate Review →</button>
-            </div>
-            <div class="mini-vmodel" id="miniVModel">
-              <!-- Rendered by JS -->
-            </div>
-          </div>
-
-          <!-- Risk Flags -->
-          <div class="card risk-card">
-            <div class="card-header">
-              <h3>Risk Flags</h3>
-              <span class="risk-count" id="riskCount">0</span>
-            </div>
-            <div class="risk-list" id="riskList">
-              <div class="empty-state">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                <p>No active project. Create one to see risk analysis.</p>
+        <div class="vmodel-grid">
+          <!-- LEFT SIDE: SPECIFICATION & DECOMPOSITION BRANCH -->
+          <div class="vmodel-column left-branch">
+            <div class="column-title">SPECIFICATION (DECOMPOSITION)</div>
+            
+            <div class="vmodel-node-card left-node" id="node-SYS1" data-node="SYS1" onclick="onNodeClick('SYS1')">
+              <div class="node-header">
+                <span class="node-id">SYS.1</span>
+                <span class="node-tier">TIER 1 — SYSTEM</span>
               </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="dash-right">
-          <!-- Phase Task List -->
-          <div class="card phase-tasks-card">
-            <div class="card-header">
-              <h3>Current Phase Tasks</h3>
-              <button class="btn-text" onclick="switchView('vmodel')">View Full Model →</button>
-            </div>
-            <div class="phase-tasks-list" id="phaseTasksList">
-              <div class="empty-state">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-                <p>Start a project to see phase-specific tasks.</p>
+              <div class="node-title">System Requirements Specification</div>
+              <div class="node-meta">
+                <span class="meta-tag">IEC 62304 5.1</span>
+                <span class="meta-status verified">12 REQS</span>
               </div>
+              <div class="node-bridge-indicator" title="Connected to System Acceptance Test (SYS.5)">↔ SYS.5</div>
             </div>
-          </div>
 
-          <!-- Recent Activity / Artifacts -->
-          <div class="card artifacts-card">
-            <div class="card-header">
-              <h3>Phase Artifacts</h3>
-              <span class="card-tag artifact-tag" id="artifactPhaseTag">–</span>
-            </div>
-            <div class="artifacts-list" id="artifactsList">
-              <div class="empty-state">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
-                <p>Artifacts will appear as phases are configured.</p>
+            <div class="vmodel-node-card left-node" id="node-SYS2" data-node="SYS2" onclick="onNodeClick('SYS2')">
+              <div class="node-header">
+                <span class="node-id">SYS.2</span>
+                <span class="node-tier">TIER 2 — ARCHITECTURE</span>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- V MODEL VIEW -->
-    <section class="view" id="view-vmodel">
-      <div class="view-header">
-        <div>
-          <h1 class="view-title">V Model Framework</h1>
-          <p class="view-subtitle">Click any phase node to explore tasks, artifacts, and validation criteria</p>
-        </div>
-        <div class="header-actions">
-          <button class="btn-secondary" onclick="expandAllPhases()">Expand All</button>
-          <button class="btn-secondary" onclick="collapseAllPhases()">Collapse All</button>
-        </div>
-      </div>
-
-      <div class="vmodel-container">
-        <!-- Full V Model Diagram -->
-        <div class="vmodel-diagram" id="vmodelDiagram">
-          <!-- Left arm labels -->
-          <div class="vmodel-arm-label left-label">Development</div>
-          <div class="vmodel-arm-label right-label">Validation</div>
-          <canvas id="vmodelCanvas"></canvas>
-          <div class="vmodel-nodes" id="vmodelNodes">
-            <!-- Rendered by JS -->
-          </div>
-        </div>
-
-        <!-- Phase Detail Panel -->
-        <div class="phase-detail-panel" id="phaseDetailPanel">
-          <div class="pdp-header">
-            <div class="pdp-phase-badge" id="pdpBadge">–</div>
-            <h2 id="pdpTitle">Select a Phase</h2>
-            <p id="pdpDesc">Click any node in the V Model diagram to see detailed phase information.</p>
-          </div>
-          <div class="pdp-body" id="pdpBody">
-            <div class="empty-state large">
-              <div class="es-icon">
-                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M24 8v8M16 12l5.66 5.66M8 20h8M12 28l5.66-5.66M20 40v-8M28 36l-5.66-5.66M40 28h-8M36 20l-5.66 5.66"/></svg>
+              <div class="node-title">System Architecture & Safety Concept</div>
+              <div class="node-meta">
+                <span class="meta-tag">HARA / Risk Class C</span>
+                <span class="meta-status verified">4 ARCHES</span>
               </div>
-              <p>Select a phase node to see detailed guidance</p>
+              <div class="node-bridge-indicator" title="Connected to System Verification Test (SYS.4)">↔ SYS.4</div>
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- TRACEABILITY VIEW -->
-    <section class="view" id="view-traceability">
-      <div class="view-header">
-        <div>
-          <h1 class="view-title">Traceability Matrix</h1>
-          <p class="view-subtitle">Requirements → Design → Implementation → Tests</p>
-        </div>
-        <div class="header-actions">
-          <select class="select-filter" id="traceFilter" onchange="filterTraceability()">
-            <option value="all">All Items</option>
-            <option value="requirements">Requirements Only</option>
-            <option value="design">Design Items</option>
-            <option value="tests">Test Cases</option>
-          </select>
-        </div>
-      </div>
-      <div class="trace-container" id="traceContainer">
-        <div class="empty-state large">
-          <div class="es-icon">
-            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="28" y="4" width="16" height="16" rx="2"/><rect x="4" y="28" width="16" height="16" rx="2"/><rect x="28" y="28" width="16" height="16" rx="2"/><line x1="20" y1="12" x2="28" y2="12"/><line x1="12" y1="20" x2="12" y2="28"/><line x1="36" y1="20" x2="36" y2="28"/><line x1="20" y1="36" x2="28" y2="36"/></svg>
-          </div>
-          <p>Create a project to generate the traceability matrix</p>
-          <button class="btn-primary" onclick="openProjectModal()">Create Project</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- TIMELINE VIEW -->
-    <section class="view" id="view-timeline">
-      <div class="view-header">
-        <div>
-          <h1 class="view-title">Phase Timeline</h1>
-          <p class="view-subtitle">V Model phase dependencies, milestones, and critical path</p>
-        </div>
-      </div>
-      <div class="timeline-container" id="timelineContainer">
-        <div class="empty-state large">
-          <div class="es-icon">
-            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="8" width="40" height="32" rx="3"/><line x1="4" y1="18" x2="44" y2="18"/><line x1="14" y1="8" x2="14" y2="18"/><line x1="34" y1="8" x2="34" y2="18"/></svg>
-          </div>
-          <p>Create a project to generate the phase timeline</p>
-          <button class="btn-primary" onclick="openProjectModal()">Create Project</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- AI ADVISOR VIEW -->
-    <section class="view" id="view-advisor">
-      <div class="view-header">
-        <div>
-          <h1 class="view-title">AI Advisor</h1>
-          <p class="view-subtitle">Automotive systems engineering guidance & V Model methodology</p>
-        </div>
-        <div class="header-actions">
-          <button class="btn-secondary" onclick="clearChat()">Clear Chat</button>
-        </div>
-      </div>
-
-      <div class="advisor-container">
-        <div class="chat-panel">
-          <div class="chat-messages" id="chatMessages">
-            <div class="chat-msg ai-msg">
-              <div class="msg-avatar ai-avatar">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 10-16 0"/><path d="M12 14v7M9 18l3-3 3 3"/></svg>
+            <div class="vmodel-node-card left-node" id="node-SW1" data-node="SW1" onclick="onNodeClick('SW1')">
+              <div class="node-header">
+                <span class="node-id">SW.1</span>
+                <span class="node-tier">TIER 3 — SOFTWARE REQS</span>
               </div>
-              <div class="msg-bubble">
-                <div class="msg-header">
-                  <span class="msg-name">AutoVModel Advisor</span>
-                  <span class="msg-time" id="initTime"></span>
-                </div>
-                <div class="msg-text">
-                  <p>Welcome to the <strong>AutoVModel AI Advisor</strong> — your automotive systems engineering co-pilot.</p>
-                  <p>I specialize in V Model methodology for automotive projects. To get started, tell me about your project:</p>
-                  <ul>
-                    <li><strong>Vehicle system:</strong> powertrain, safety, infotainment, chassis, ADAS?</li>
-                    <li><strong>Project scope:</strong> new ECU development, software update, system integration?</li>
-                    <li><strong>Team structure:</strong> size and supplier involvement?</li>
-                    <li><strong>Timeline:</strong> target milestones and SOP date?</li>
-                    <li><strong>Safety level:</strong> ASIL A–D or QM?</li>
-                  </ul>
-                  <p>I'll immediately map your inputs to V Model phases and identify gaps, artifacts, and traceability requirements.</p>
-                </div>
+              <div class="node-title">Software Requirements Specification (SRS)</div>
+              <div class="node-meta">
+                <span class="meta-tag">IEC 62304 5.2</span>
+                <span class="meta-status verified">18 SRS</span>
               </div>
+              <div class="node-bridge-indicator" title="Connected to Software Integration Test (SW.6)">↔ SW.6</div>
+            </div>
+
+            <div class="vmodel-node-card left-node" id="node-SW2" data-node="SW2" onclick="onNodeClick('SW2')">
+              <div class="node-header">
+                <span class="node-id">SW.2</span>
+                <span class="node-tier">TIER 4 — UNIT SPEC</span>
+              </div>
+              <div class="node-title">Software Architectural & Detailed Unit Design</div>
+              <div class="node-meta">
+                <span class="meta-tag">IEC 62304 5.3 & 5.4</span>
+                <span class="meta-status verified">14 MODULES</span>
+              </div>
+              <div class="node-bridge-indicator" title="Connected to Unit Component Testing (SW.5)">↔ SW.5</div>
             </div>
           </div>
 
-          <div class="chat-input-area">
-            <div class="quick-prompts" id="quickPrompts">
-              <button class="qp-btn" onclick="sendQuickPrompt('What artifacts are required for Requirements Definition phase?')">Requirements artifacts</button>
-              <button class="qp-btn" onclick="sendQuickPrompt('How does ISO 26262 map to V Model phases?')">ISO 26262 mapping</button>
-              <button class="qp-btn" onclick="sendQuickPrompt('What are common V Model pitfalls in ADAS development?')">ADAS pitfalls</button>
-              <button class="qp-btn" onclick="sendQuickPrompt('Explain FMEA and where it fits in the V Model')">FMEA placement</button>
-              <button class="qp-btn" onclick="sendQuickPrompt('How do I establish traceability from requirements to test cases?')">Traceability setup</button>
-            </div>
-            <div class="chat-input-row">
-              <textarea class="chat-input" id="chatInput" placeholder="Describe your automotive project or ask a V Model question..." rows="1" onkeydown="handleChatKey(event)" oninput="autoResize(this)"></textarea>
-              <button class="chat-send-btn" id="chatSendBtn" onclick="sendChatMessage()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          <!-- VERTEX CENTER: IMPLEMENTATION / CODE -->
+          <div class="vmodel-column vertex-branch">
+            <div class="column-title">VERTEX (IMPLEMENTATION)</div>
+            
+            <div class="vmodel-node-card vertex-node highlighted-vertex" id="node-SW4" data-node="SW4" onclick="onNodeClick('SW4')">
+              <div class="vertex-badge">CORE IMPLEMENTATION</div>
+              <div class="node-header">
+                <span class="node-id">SW.4</span>
+                <span class="node-tier">VERTEX — CODE</span>
+              </div>
+              <div class="node-title">Software Code Implementation (C/C++)</div>
+              <div class="node-meta">
+                <span class="meta-tag">MISRA-C:2012</span>
+                <span class="meta-status vertex-pass">3,420 LOC (100% TRACED)</span>
+              </div>
+              <p class="node-desc">Source code with zero orphan blocks. Pre-formatted into structured Context Bundles for AI Agents.</p>
+              <button class="btn-vertex-serve" onclick="event.stopPropagation(); serveNodeBundle('SW4');">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                SERVE VERTEX BUNDLE
               </button>
             </div>
           </div>
+
+          <!-- RIGHT SIDE: VERIFICATION & TESTING BRANCH -->
+          <div class="vmodel-column right-branch">
+            <div class="column-title">VERIFICATION (TESTING)</div>
+
+            <div class="vmodel-node-card right-node" id="node-SW5" data-node="SW5" onclick="onNodeClick('SW5')">
+              <div class="node-header">
+                <span class="node-id">SW.5</span>
+                <span class="node-tier">VERIFICATION 1</span>
+              </div>
+              <div class="node-title">Software Unit Verification & Code Testing</div>
+              <div class="node-meta">
+                <span class="meta-tag">IEC 62304 5.5</span>
+                <span class="meta-status verified">32/32 PASSED</span>
+              </div>
+              <div class="node-bridge-indicator" title="Connected to Unit Spec (SW.2)">↔ SW.2</div>
+            </div>
+
+            <div class="vmodel-node-card right-node" id="node-SW6" data-node="SW6" onclick="onNodeClick('SW6')">
+              <div class="node-header">
+                <span class="node-id">SW.6</span>
+                <span class="node-tier">VERIFICATION 2</span>
+              </div>
+              <div class="node-title">Software Integration & Integration Testing</div>
+              <div class="node-meta">
+                <span class="meta-tag">IEC 62304 5.6</span>
+                <span class="meta-status verified">14/14 PASSED</span>
+              </div>
+              <div class="node-bridge-indicator" title="Connected to SRS (SW.1)">↔ SW.1</div>
+            </div>
+
+            <div class="vmodel-node-card right-node" id="node-SYS4" data-node="SYS4" onclick="onNodeClick('SYS4')">
+              <div class="node-header">
+                <span class="node-id">SYS.4</span>
+                <span class="node-tier">VERIFICATION 3</span>
+              </div>
+              <div class="node-title">System Verification & Hardware Integration</div>
+              <div class="node-meta">
+                <span class="meta-tag">System HIL</span>
+                <span class="meta-status verified">8/8 PASSED</span>
+              </div>
+              <div class="node-bridge-indicator" title="Connected to Architecture (SYS.2)">↔ SYS.2</div>
+            </div>
+
+            <div class="vmodel-node-card right-node" id="node-SYS5" data-node="SYS5" onclick="onNodeClick('SYS5')">
+              <div class="node-header">
+                <span class="node-id">SYS.5</span>
+                <span class="node-tier">VERIFICATION 4</span>
+              </div>
+              <div class="node-title">System Acceptance & Clinical/Safety Validation</div>
+              <div class="node-meta">
+                <span class="meta-tag">IEC 62304 5.7</span>
+                <span class="meta-status verified">6/6 PASSED</span>
+              </div>
+              <div class="node-bridge-indicator" title="Connected to Requirements (SYS.1)">↔ SYS.1</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Node Details Drawer Bar -->
+      <div class="node-quick-bar" id="nodeQuickBar">
+        <div class="qb-left">
+          <span class="qb-tag" id="qbTag">SELECTED NODE: SYS.1</span>
+          <span class="qb-title" id="qbTitle">System Requirements Specification</span>
+        </div>
+        <div class="qb-center">
+          <span class="qb-trace" id="qbTrace">Trace Link: SYS.1 ↔ SYS.5 (100% Validated)</span>
+        </div>
+        <div class="qb-right">
+          <button class="btn-sm-primary" onclick="openSelectedNodeModal()">Inspect Artifact Details</button>
+          <button class="btn-sm-serve" onclick="serveSelectedNodeBundle()">Serve Node Bundle for AI</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 2: CONTEXT BUNDLE ENGINE -->
+    <section class="tab-view" id="view-bundle">
+      <div class="view-header-row">
+        <div>
+          <span class="section-tag-badge">STRUCTURED AI CONTEXT ENGINE</span>
+          <h2 class="view-main-title">Context Bundle Server & Prompt Generator</h2>
+          <p class="view-desc-text">
+            Guarantees AI Agents receive 100% explicit Requirements + Architecture + Unit Design + MISRA Constraints + Verification Tests. Zero guessing, zero hallucinations.
+          </p>
+        </div>
+        <div class="bundle-actions-top">
+          <label for="bundleTargetNode">Target Scope:</label>
+          <select id="bundleTargetNode" onchange="generateContextBundle()">
+            <option value="FULL">Full V-Model Pipeline (All Tiers)</option>
+            <option value="SW.4" selected>Vertex Code & Unit Spec (SW.4 + SW.2 + SW.5)</option>
+            <option value="SYS.1">System Requirements Tier (SYS.1 + SYS.5)</option>
+            <option value="SW.1">Software Specification Tier (SW.1 + SW.6)</option>
+          </select>
+
+          <label for="bundleFormat">Format:</label>
+          <select id="bundleFormat" onchange="generateContextBundle()">
+            <option value="json" selected>JSON Schema (Machine Readable)</option>
+            <option value="yaml">YAML Spec</option>
+            <option value="markdown">AI System Prompt (Markdown)</option>
+            <option value="arxml">ARXML (Automotive Standard)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="bundle-layout">
+        <!-- Left Options / Meta -->
+        <div class="bundle-sidebar">
+          <div class="card-box">
+            <h3>Bundle Payload Summary</h3>
+            <div class="meta-stat-group">
+              <div class="stat-item">
+                <span class="stat-lbl">Requirements Included</span>
+                <span class="stat-val" id="bundleReqCount">18 SRS Reqs</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-lbl">Safety Standard</span>
+                <span class="stat-val">IEC 62304 / Class C</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-lbl">Estimated Tokens</span>
+                <span class="stat-val" id="bundleTokenCount">2,840 tokens</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-lbl">Integrity Checksum</span>
+                <span class="stat-val mono-xs" id="bundleHash">sha256:e3b0c442...</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-box">
+            <h3>AI Agent Endpoint API</h3>
+            <p class="text-xs">Expose this bundle directly to LLMs, Antigravity, Cursor, or Auto-code pipelines via REST endpoint:</p>
+            <div class="code-snippet-box">
+              <code>GET /api/v1/vpath/bundle?project=insulin&scope=SW.4</code>
+            </div>
+            <button class="btn-outline-full" onclick="copyApiCurl()">Copy cURL Request</button>
+          </div>
+
+          <div class="card-box accent-box">
+            <h3>Inject to AI Agent</h3>
+            <p class="text-xs">Send this Context Bundle directly into your active Gemini 3.7 / 3.6 prompt context window.</p>
+            <button class="btn-primary-full" onclick="copyContextBundleToClipboard()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+              COPY CONTEXT BUNDLE TO CLIPBOARD
+            </button>
+          </div>
         </div>
 
-        <!-- Context Panel -->
-        <div class="advisor-context">
-          <div class="card context-card">
-            <div class="card-header">
-              <h3>Project Context</h3>
-            </div>
-            <div class="context-body" id="advisorContextBody">
-              <div class="context-item">
-                <span class="ctx-label">System</span>
-                <span class="ctx-value" id="ctx-system">–</span>
-              </div>
-              <div class="context-item">
-                <span class="ctx-label">ASIL</span>
-                <span class="ctx-value" id="ctx-asil">–</span>
-              </div>
-              <div class="context-item">
-                <span class="ctx-label">Phase</span>
-                <span class="ctx-value" id="ctx-phase">–</span>
-              </div>
-              <div class="context-item">
-                <span class="ctx-label">Timeline</span>
-                <span class="ctx-value" id="ctx-timeline">–</span>
-              </div>
+        <!-- Right Code Preview Editor -->
+        <div class="bundle-main-viewer">
+          <div class="viewer-top-bar">
+            <span class="file-name" id="bundleFileName">vpath_context_bundle_insulin_sw4.json</span>
+            <div class="vt-right">
+              <button class="btn-tb" onclick="copyContextBundleToClipboard()">Copy</button>
+              <button class="btn-tb" onclick="downloadContextBundle()">Download File</button>
             </div>
           </div>
+          <pre class="code-viewer" id="contextBundleCodeDisplay"><code><!-- JS populates bundle content here --></code></pre>
+        </div>
+      </div>
+    </section>
 
-          <div class="card tips-card">
-            <div class="card-header">
-              <h3>V Model Pillars</h3>
+    <!-- VIEW 3: TRACEABILITY MATRIX -->
+    <section class="tab-view" id="view-traceability">
+      <div class="view-header-row">
+        <div>
+          <span class="section-tag-badge">BIDIRECTIONAL TRACEABILITY MATRIX</span>
+          <h2 class="view-main-title">Requirement to Verification Traceability</h2>
+          <p class="view-desc-text">
+            End-to-end traceability proof for regulatory audits (FDA, ISO 26262, FAA). Every requirement maps forward to code & test, every line of code traces back to a requirement.
+          </p>
+        </div>
+        <div class="matrix-filters">
+          <input type="text" id="matrixSearch" placeholder="Filter by ID, Requirement, or Function..." onkeyup="filterMatrixTable()" />
+          <select id="matrixStatusFilter" onchange="filterMatrixTable()">
+            <option value="ALL">All Statuses (100% Traced)</option>
+            <option value="PASSED">Passed Tests Only</option>
+            <option value="GAP">Verification Gaps (0)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="matrix-table-card">
+        <table class="trace-table" id="traceTable">
+          <thead>
+            <tr>
+              <th>Sys Req (SYS.1)</th>
+              <th>SW Spec (SW.1)</th>
+              <th>Architecture (SW.2)</th>
+              <th>Code Implementation (SW.4)</th>
+              <th>Unit Test (SW.5)</th>
+              <th>Integration Test (SW.6)</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="traceTableBody">
+            <!-- JS populates matrix rows -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- VIEW 4: AI AGENT SANDBOX (Interactive Demonstration) -->
+    <section class="tab-view" id="view-sandbox">
+      <div class="view-header-row">
+        <div>
+          <span class="section-tag-badge">AI AGENT EXECUTION SIMULATOR</span>
+          <h2 class="view-main-title">Context Bundle vs Raw Prompt Benchmark</h2>
+          <p class="view-desc-text">
+            Compare AI coding performance when using standard ambiguous prompts vs using rigid V-PATH Context Bundles.
+          </p>
+        </div>
+      </div>
+
+      <!-- Sandbox Config Card -->
+      <div class="sandbox-controls-card">
+        <div class="sc-group">
+          <label>Select Safety Task Prompt:</label>
+          <select id="sandboxPromptSelect" onchange="onSandboxPromptChange()">
+            <option value="insulin_calc">Task 1: Calculate Insulin Bolus Dosage (IEC 62304 Class C)</option>
+            <option value="aeb_trigger">Task 2: Evaluate Emergency Braking Threshold (ISO 26262 ASIL-D)</option>
+            <option value="pacemaker_pulse">Task 3: Ventricular Pacing Timing Control (ISO 14971)</option>
+          </select>
+        </div>
+        <div class="sc-group">
+          <label>Select AI Agent Model:</label>
+          <select id="sandboxModelSelect">
+            <option value="gemini37">Gemini 3.7 (Recommended)</option>
+            <option value="gemini36">Gemini 3.6 Flash</option>
+            <option value="claude37">Claude 3.7 Sonnet</option>
+            <option value="gpt4o">GPT-4o Enterprise</option>
+          </select>
+        </div>
+        <button class="btn-execute-sim" onclick="runSandboxSimulation()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l14 9-14 9V3z"/></svg>
+          RUN SIMULATION BENCHMARK
+        </button>
+      </div>
+
+      <!-- Side-by-side comparison output -->
+      <div class="sandbox-comparison-grid">
+        <!-- Left: Without Context Bundle -->
+        <div class="sim-panel fail-panel">
+          <div class="sim-header">
+            <span class="sim-badge bad">WITHOUT CONTEXT BUNDLE</span>
+            <span class="sim-status">FAIL AUDIT — 3 VIOLATIONS</span>
+          </div>
+          <div class="sim-prompt-box">
+            <label>Raw Prompt Given to AI:</label>
+            <p id="simRawPrompt">"Write C code to calculate insulin dose based on blood glucose input."</p>
+          </div>
+          <div class="sim-result-code">
+            <label>AI Output (Unstructured / Guessing):</label>
+            <pre><code id="simCodeRaw">/* Generated without context */
+float calculate_dose(float glucose) {
+    // Dangerous assumption: No upper bounds check
+    // No MISRA-C compliance
+    // No error handling for sensor fault
+    return (glucose - 100.0) / 50.0;
+}</code></pre>
+          </div>
+          <div class="sim-audit-log">
+            <div class="log-item error">✘ Missing Sys Req SYS-102 (Max dose ceiling limit 15.0 U)</div>
+            <div class="log-item error">✘ MISRA-C 10.3 Violation (Implicit float conversions)</div>
+            <div class="log-item error">✘ Missing Unit Verification Test Suite</div>
+          </div>
+        </div>
+
+        <!-- Right: WITH V-PATH Context Bundle -->
+        <div class="sim-panel pass-panel">
+          <div class="sim-header">
+            <span class="sim-badge good">WITH V-PATH CONTEXT BUNDLE</span>
+            <span class="sim-status">100% COMPLIANT & PASSED</span>
+          </div>
+          <div class="sim-prompt-box">
+            <label>V-PATH Context Bundle Injected:</label>
+            <p id="simBundlePrompt">"Includes SYS.1 (Max Dose Safety Ceiling), SW.1 (Fault Detection), SW.2 (MISRA-C Rule Set), SW.5 (Unit Assertions)"</p>
+          </div>
+          <div class="sim-result-code">
+            <label>AI Output (Rigid V-Model Compliant):</label>
+            <pre><code id="simCodeVPath">/* V-PATH CONTEXT BUNDLE DRIVEN CODE */
+#include "insulin_safety.h"
+
+DoseResult_t Calculate_Bolus_Dose(const GlucoseReading_t* const reading) {
+    if (reading == NULL || reading->sensor_status != SENSOR_OK) {
+        return (DoseResult_t){ .dose_units = 0.0f, .status = DOSE_ERR_SENSOR_FAULT };
+    }
+    float raw_dose = (reading->glucose_mg_dl - TARGET_GLUCOSE_BASE) / INSULIN_SENSITIVITY_RATIO;
+    if (raw_dose > MAX_SAFE_CEILING_UNITS) {
+        raw_dose = MAX_SAFE_CEILING_UNITS; // Enforce SYS-102 ceiling constraint
+    }
+    return (DoseResult_t){ .dose_units = raw_dose, .status = DOSE_SUCCESS };
+}</code></pre>
+          </div>
+          <div class="sim-audit-log">
+            <div class="log-item success">✔ SYS-102 Max Dose Ceiling Enforced</div>
+            <div class="log-item success">✔ MISRA-C 2012 Fully Compliant (Zero Warnings)</div>
+            <div class="log-item success">✔ SW.5 Unit Test Suite Automatically Traced & Verified</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 5: COMPLIANCE AUDITS -->
+    <section class="tab-view" id="view-compliance">
+      <div class="view-header-row">
+        <div>
+          <span class="section-tag-badge">REGULATORY AUDIT CERTIFICATION</span>
+          <h2 class="view-main-title">Safety Standards Compliance Checklist</h2>
+          <p class="view-desc-text">
+            Automated verification report for FDA 510(k), ISO 26262 ASIL-D, DO-178C DAL-A, and Automotive SPICE audits.
+          </p>
+        </div>
+        <button class="btn-primary" onclick="exportAuditReport()">Generate PDF Audit Package</button>
+      </div>
+
+      <div class="compliance-cards-grid">
+        <div class="compliance-card">
+          <div class="cc-header">
+            <span class="cc-title">IEC 62304:2015</span>
+            <span class="cc-badge pass">CLASS C CERTIFIED</span>
+          </div>
+          <p class="cc-desc">Medical Device Software — Software Life Cycle Processes</p>
+          <ul class="cc-list">
+            <li><span class="chk">✔</span> 5.1 Software Development Planning (Traced to SYS.1)</li>
+            <li><span class="chk">✔</span> 5.2 Software Requirements Analysis (Traced to SW.1)</li>
+            <li><span class="chk">✔</span> 5.3 Software Architectural Design (Traced to SW.2)</li>
+            <li><span class="chk">✔</span> 5.4 Software Detailed Design (Traced to SW.2)</li>
+            <li><span class="chk">✔</span> 5.5 Software Unit Implementation (Traced to SW.4/SW.5)</li>
+            <li><span class="chk">✔</span> 5.6 Software Integration & Testing (Traced to SW.6)</li>
+            <li><span class="chk">✔</span> 5.7 Software System Testing (Traced to SYS.5)</li>
+          </ul>
+        </div>
+
+        <div class="compliance-card">
+          <div class="cc-header">
+            <span class="cc-title">ISO 26262:2018</span>
+            <span class="cc-badge pass">ASIL-D READY</span>
+          </div>
+          <p class="cc-desc">Road Vehicles — Functional Safety Standard</p>
+          <ul class="cc-list">
+            <li><span class="chk">✔</span> Part 4: System level development & safety goals</li>
+            <li><span class="chk">✔</span> Part 6: Product development at the software level</li>
+            <li><span class="chk">✔</span> Bidirectional traceability matrix 100% complete</li>
+            <li><span class="chk">✔</span> MISRA-C 2012 Static analysis verification clean</li>
+          </ul>
+        </div>
+
+        <div class="compliance-card">
+          <div class="cc-header">
+            <span class="cc-title">DO-178C / ED-12C</span>
+            <span class="cc-badge pass">DAL-A READY</span>
+          </div>
+          <p class="cc-desc">Software Considerations in Airborne Systems</p>
+          <ul class="cc-list">
+            <li><span class="chk">✔</span> High-Level Requirements (HLR) mapped to LLR</li>
+            <li><span class="chk">✔</span> Structural Coverage (MC/DC Coverage 100%)</li>
+            <li><span class="chk">✔</span> Context Bundle Artifact Log generated</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 6: INTERACTIVE LAYMAN USER GUIDE & HELP -->
+    <section class="tab-view" id="view-help">
+      <div class="view-header-row">
+        <div>
+          <span class="section-tag-badge">EVERYTHING YOU NEED TO KNOW IN PLAIN ENGLISH</span>
+          <h2 class="view-main-title">User Guide & Layman's Help Manual</h2>
+          <p class="view-desc-text">
+            Learn how V-PATH.AGENT turns complex engineering standards (IEC 62304, ISO 26262) into simple structured "Context Bundles" for AI Agents using real-world analogies.
+          </p>
+        </div>
+        <button class="btn-primary" onclick="copyContextBundleToClipboard()">Copy Sample Bundle</button>
+      </div>
+
+      <!-- Real World Analogies Grid -->
+      <div class="help-analogies-grid">
+        <div class="analogy-card">
+          <div class="analogy-header">
+            <span class="analogy-icon">🏗️</span>
+            <h3>Analogy #1: The High-Tech House (What is the V-Model?)</h3>
+          </div>
+          <p class="analogy-text">
+            Imagine building a 50-story skyscraper. You wouldn't just tell construction workers: <em>"Start putting bricks together!"</em>
+          </p>
+          <div class="analogy-comparison">
+            <div class="ac-left">
+              <strong>Left Side of V (Planning):</strong>
+              <ul>
+                <li><strong>SYS.1 (Top Floor):</strong> Architect's overall blueprint (<em>Must withstand 100mph wind</em>).</li>
+                <li><strong>SW.1 (Middle Floor):</strong> Electrical & Plumbing schematics.</li>
+                <li><strong>SW.2 (Ground Floor):</strong> Specs for door hinges & steel bolts.</li>
+              </ul>
             </div>
-            <div class="tips-list">
-              <div class="tip-item">
-                <div class="tip-dot left-phase"></div>
-                <div>
-                  <div class="tip-title">Left Arm: Build Right</div>
-                  <div class="tip-desc">Requirements → System Design → Component Design → Implementation</div>
-                </div>
-              </div>
-              <div class="tip-item">
-                <div class="tip-dot right-phase"></div>
-                <div>
-                  <div class="tip-title">Right Arm: Validate Right</div>
-                  <div class="tip-desc">Unit Test → Integration Test → System Test → Acceptance</div>
-                </div>
-              </div>
-              <div class="tip-item">
-                <div class="tip-dot link-phase"></div>
-                <div>
-                  <div class="tip-title">Horizontal Links</div>
-                  <div class="tip-desc">Each left phase directly validates against its right counterpart</div>
-                </div>
-              </div>
-              <div class="tip-item">
-                <div class="tip-dot trace-phase"></div>
-                <div>
-                  <div class="tip-title">Traceability</div>
-                  <div class="tip-desc">Every requirement traceable from definition to acceptance test</div>
-                </div>
-              </div>
+            <div class="ac-right">
+              <strong>Right Side of V (Testing):</strong>
+              <ul>
+                <li><strong>SW.5 (Unit Test):</strong> Testing individual bolts in a lab.</li>
+                <li><strong>SW.6 (Integration):</strong> Testing electrical wiring connected to generator.</li>
+                <li><strong>SYS.5 (Validation):</strong> Simulating 100mph wind to test entire building!</li>
+              </ul>
             </div>
           </div>
+          <p class="analogy-footer"><strong>Key takeaway:</strong> Every blueprint line on the left MUST match a specific safety test on the right before anyone moves in!</p>
+        </div>
 
-          <div class="card standards-card">
-            <div class="card-header">
-              <h3>Standards Reference</h3>
-            </div>
-            <div class="standards-list">
-              <div class="std-item" onclick="sendQuickPrompt('Explain ISO 26262 and its V Model mapping')">
-                <span class="std-name">ISO 26262</span>
-                <span class="std-desc">Functional Safety</span>
-                <svg viewBox="0 0 16 16" fill="currentColor"><path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
-              </div>
-              <div class="std-item" onclick="sendQuickPrompt('What is SOTIF and how does it differ from ISO 26262 in V Model?')">
-                <span class="std-name">SOTIF</span>
-                <span class="std-desc">ISO 21448 — Intended Functionality</span>
-                <svg viewBox="0 0 16 16" fill="currentColor"><path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
-              </div>
-              <div class="std-item" onclick="sendQuickPrompt('Explain AUTOSAR and its role in automotive software V Model')">
-                <span class="std-name">AUTOSAR</span>
-                <span class="std-desc">SW Architecture Standard</span>
-                <svg viewBox="0 0 16 16" fill="currentColor"><path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
-              </div>
-              <div class="std-item" onclick="sendQuickPrompt('How does ASPICE relate to V Model phases?')">
-                <span class="std-name">ASPICE</span>
-                <span class="std-desc">Automotive SPICE Process</span>
-                <svg viewBox="0 0 16 16" fill="currentColor"><path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
-              </div>
-              <div class="std-item" onclick="sendQuickPrompt('Explain UDS protocol and where ECU testing fits in the V Model')">
-                <span class="std-name">UDS / OBD</span>
-                <span class="std-desc">Diagnostic Services</span>
-                <svg viewBox="0 0 16 16" fill="currentColor"><path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
-              </div>
-            </div>
+        <div class="analogy-card">
+          <div class="analogy-header">
+            <span class="analogy-icon">🍕</span>
+            <h3>Analogy #2: Ordering Pizza (Why AI Needs Context Bundles)</h3>
+          </div>
+          <p class="analogy-text">
+            Imagine ordering dinner from a high-end chef (your AI Agent):
+          </p>
+          <div class="analogy-box fail-box">
+            <strong>❌ Scenario A: Without Context Bundle (Vague Prompt)</strong>
+            <p>You text the chef: <em>"Bake me a pizza."</em> The chef guesses! He adds peanut butter, uses wheat flour that triggers your severe allergy, and bakes it at the wrong temp. <strong>Result: Danger & Disaster!</strong></p>
+          </div>
+          <div class="analogy-box pass-box">
+            <strong>✔ Scenario B: With V-PATH Context Bundle (Rigid Spec)</strong>
+            <p>You send a V-PATH Context Bundle: 1. <em>0% Peanuts & Gluten-Free</em> (SYS.1). 2. <em>Bake at 450°F for 12 mins</em> (SW.1). 3. <em>100g Mozzarella & 50ml Sauce</em> (SW.2). 4. <em>Measure crust thickness before serving</em> (SW.5). <strong>Result: 100% Perfect, Safe Pizza Every Time!</strong></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step-by-Step Practical Usage Guide -->
+      <div class="help-steps-card">
+        <h3>5 Quick Steps to Master V-PATH.AGENT</h3>
+        <div class="steps-flex-grid">
+          <div class="step-box">
+            <div class="step-num">1</div>
+            <h4>Pick Active Project</h4>
+            <p>Choose <strong>Smart Insulin Pump</strong>, <strong>Autonomous Braking</strong>, or click <strong>+</strong> for custom.</p>
+          </div>
+          <div class="step-box">
+            <div class="step-num">2</div>
+            <h4>Explore V-Model</h4>
+            <p>Hover on nodes to illuminate horizontal verification bridges (`SYS.1 ↔ SYS.5`).</p>
+          </div>
+          <div class="step-box">
+            <div class="step-num">3</div>
+            <h4>Serve Context Bundle</h4>
+            <p>Click <strong>SERVE BUNDLE</strong> button to copy structured JSON or Markdown prompts.</p>
+          </div>
+          <div class="step-box">
+            <div class="step-num">4</div>
+            <h4>Inject into AI</h4>
+            <p>Paste into Gemini 3.7, Antigravity, Cursor, or ChatGPT to generate 100% safe code.</p>
+          </div>
+          <div class="step-box">
+            <div class="step-num">5</div>
+            <h4>Verify Traceability</h4>
+            <p>Check the Traceability Matrix to prove zero un-tested requirements to regulatory auditors.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ Accordion Container -->
+      <div class="help-faq-card">
+        <h3>Frequently Asked Questions (FAQ)</h3>
+        
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>Q: Can I use V-PATH.AGENT with any AI Model?</span>
+            <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-answer">
+            Yes! Context Bundles are machine-readable and model-agnostic. They work with Gemini 3.7 / 3.6, Antigravity, Claude 3.7, GPT-4o, Cursor, GitHub Copilot, and local LLMs (Llama 3 / Ollama).
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>Q: What does "Vertex: Code" mean?</span>
+            <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-answer">
+            In the V-Model diagram, the "Vertex" is the bottom tip of the V. It represents actual source code (C/C++/Rust) where top-down planning transitions into bottom-up verification. In V-PATH, the Vertex is highlighted in crimson red (#D93838).
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>Q: What regulatory standards are supported?</span>
+            <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-answer">
+            Out-of-the-box support for IEC 62304 (Medical Class A/B/C), ISO 26262 (Automotive ASIL A-D), DO-178C (Aerospace DAL A-E), and ISO 14971 Risk Management.
           </div>
         </div>
       </div>
@@ -483,475 +707,78 @@
 
   </main>
 
-  <!-- PROJECT MODAL -->
-  <div class="modal-overlay" id="projectModal">
-    <div class="modal">
+  <!-- MODALS CONTAINER -->
+
+  <!-- 1. SERVE CONTEXT BUNDLE MODAL -->
+  <div class="modal-backdrop" id="serveBundleModal">
+    <div class="modal-dialog width-lg">
       <div class="modal-header">
-        <div class="modal-title-area">
-          <div class="modal-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-          </div>
-          <div>
-            <h2 class="modal-title">New Automotive Project</h2>
-            <p class="modal-subtitle">Configure your V Model project parameters</p>
-          </div>
-        </div>
-        <button class="modal-close" onclick="closeProjectModal()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
+        <h3>Serve Context Bundle for AI Agent</h3>
+        <button class="modal-close" onclick="closeModal('serveBundleModal')">&times;</button>
       </div>
-
-      <div class="modal-steps">
-        <div class="step active" id="step-1-dot"><span>1</span><label>System</label></div>
-        <div class="step-line"></div>
-        <div class="step" id="step-2-dot"><span>2</span><label>Scope</label></div>
-        <div class="step-line"></div>
-        <div class="step" id="step-3-dot"><span>3</span><label>Safety</label></div>
-        <div class="step-line"></div>
-        <div class="step" id="step-4-dot"><span>4</span><label>Timeline</label></div>
-      </div>
-
       <div class="modal-body">
-        <!-- Step 1: System Type -->
-        <div class="modal-step-content active" id="modal-step-1">
-          <h3 class="step-title">Vehicle System Type</h3>
-          <p class="step-desc">Select the primary automotive system domain for this project</p>
-          <div class="system-grid">
-            <div class="system-card" data-system="powertrain" onclick="selectSystem(this)">
-              <div class="sys-icon">🔧</div>
-              <div class="sys-name">Powertrain</div>
-              <div class="sys-desc">Engine, transmission, drivetrain ECUs</div>
-            </div>
-            <div class="system-card" data-system="adas" onclick="selectSystem(this)">
-              <div class="sys-icon">🚗</div>
-              <div class="sys-name">ADAS</div>
-              <div class="sys-desc">Advanced driver assistance systems</div>
-            </div>
-            <div class="system-card" data-system="safety" onclick="selectSystem(this)">
-              <div class="sys-icon">🛡️</div>
-              <div class="sys-name">Safety Systems</div>
-              <div class="sys-desc">ABS, ESC, airbag, brake-by-wire</div>
-            </div>
-            <div class="system-card" data-system="chassis" onclick="selectSystem(this)">
-              <div class="sys-icon">⚙️</div>
-              <div class="sys-name">Chassis</div>
-              <div class="sys-desc">Suspension, steering, body control</div>
-            </div>
-            <div class="system-card" data-system="infotainment" onclick="selectSystem(this)">
-              <div class="sys-icon">📱</div>
-              <div class="sys-name">Infotainment</div>
-              <div class="sys-desc">HMI, connectivity, head unit</div>
-            </div>
-            <div class="system-card" data-system="ev" onclick="selectSystem(this)">
-              <div class="sys-icon">⚡</div>
-              <div class="sys-name">EV System</div>
-              <div class="sys-desc">BMS, motor control, charging</div>
-            </div>
-            <div class="system-card" data-system="network" onclick="selectSystem(this)">
-              <div class="sys-icon">🌐</div>
-              <div class="sys-name">Vehicle Network</div>
-              <div class="sys-desc">CAN, LIN, Ethernet, gateway</div>
-            </div>
-            <div class="system-card" data-system="body" onclick="selectSystem(this)">
-              <div class="sys-icon">💡</div>
-              <div class="sys-name">Body Electronics</div>
-              <div class="sys-desc">Lighting, HVAC, doors, windows</div>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Project Name</label>
-            <input type="text" class="form-input" id="projectNameInput" placeholder="e.g., ADAS Perception Module v2.3" />
-          </div>
-        </div>
-
-        <!-- Step 2: Scope -->
-        <div class="modal-step-content" id="modal-step-2">
-          <h3 class="step-title">Project Scope & Team</h3>
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Development Type</label>
-              <select class="form-select" id="devType">
-                <option value="new_ecu">New ECU Development</option>
-                <option value="sw_update">Software Update / Enhancement</option>
-                <option value="integration">System Integration</option>
-                <option value="supplier">Supplier Component Integration</option>
-                <option value="architecture">Vehicle Architecture Design</option>
-                <option value="variant">Variant / Derivative Development</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Team Size</label>
-              <select class="form-select" id="teamSize">
-                <option value="small">Small (1–5)</option>
-                <option value="medium">Medium (6–20)</option>
-                <option value="large">Large (21–50)</option>
-                <option value="enterprise">Enterprise (50+)</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Supplier Involvement</label>
-              <select class="form-select" id="supplierInvolvement">
-                <option value="none">None (In-house only)</option>
-                <option value="tier1">Tier 1 Supplier</option>
-                <option value="tier2">Tier 2 Supplier</option>
-                <option value="multi">Multiple Suppliers</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Development Phase Start</label>
-              <select class="form-select" id="phaseStart">
-                <option value="0">Phase 1: Requirements Definition</option>
-                <option value="1">Phase 2: System Design</option>
-                <option value="2">Phase 3: Component Design</option>
-                <option value="3">Phase 4: Unit Implementation</option>
-                <option value="4">Phase 5: Unit Testing</option>
-                <option value="5">Phase 6: Integration Testing</option>
-                <option value="6">Phase 7: System Testing</option>
-                <option value="7">Phase 8: Acceptance Testing</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Project Description</label>
-            <textarea class="form-textarea" id="projectDesc" rows="3" placeholder="Brief description of what this project aims to deliver..."></textarea>
-          </div>
-        </div>
-
-        <!-- Step 3: Safety -->
-        <div class="modal-step-content" id="modal-step-3">
-          <h3 class="step-title">Safety & Compliance</h3>
-          <div class="form-group">
-            <label class="form-label">ASIL Level (ISO 26262)</label>
-            <div class="asil-grid">
-              <div class="asil-card" data-asil="QM" onclick="selectAsil(this)">
-                <div class="asil-level">QM</div>
-                <div class="asil-desc">Quality Management — No functional safety requirement</div>
-              </div>
-              <div class="asil-card" data-asil="ASIL-A" onclick="selectAsil(this)">
-                <div class="asil-level">ASIL A</div>
-                <div class="asil-desc">Low — Mild hazard potential</div>
-              </div>
-              <div class="asil-card" data-asil="ASIL-B" onclick="selectAsil(this)">
-                <div class="asil-level">ASIL B</div>
-                <div class="asil-desc">Moderate — Moderate injury risk</div>
-              </div>
-              <div class="asil-card" data-asil="ASIL-C" onclick="selectAsil(this)">
-                <div class="asil-level">ASIL C</div>
-                <div class="asil-desc">High — Severe injury risk</div>
-              </div>
-              <div class="asil-card asil-d" data-asil="ASIL-D" onclick="selectAsil(this)">
-                <div class="asil-level">ASIL D</div>
-                <div class="asil-desc">Highest — Life-threatening / fatality risk</div>
-              </div>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Applicable Standards</label>
-              <div class="checkbox-group">
-                <label class="checkbox-item"><input type="checkbox" id="std-26262" checked /> ISO 26262 (Functional Safety)</label>
-                <label class="checkbox-item"><input type="checkbox" id="std-sotif" /> ISO 21448 (SOTIF)</label>
-                <label class="checkbox-item"><input type="checkbox" id="std-aspice" /> AUTOSAR Classic / Adaptive</label>
-                <label class="checkbox-item"><input type="checkbox" id="std-cyber" /> UN R155 (Cybersecurity)</label>
-                <label class="checkbox-item"><input type="checkbox" id="std-ota" /> UN R156 (Software OTA)</label>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Step 4: Timeline -->
-        <div class="modal-step-content" id="modal-step-4">
-          <h3 class="step-title">Project Timeline</h3>
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Project Start Date</label>
-              <input type="date" class="form-input" id="startDate" />
-            </div>
-            <div class="form-group">
-              <label class="form-label">SOP (Start of Production)</label>
-              <input type="date" class="form-input" id="sopDate" />
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Phase Duration Allocation</label>
-            <div class="phase-sliders" id="phaseSliders">
-              <!-- Rendered by JS -->
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Key Milestones</label>
-            <div class="milestone-inputs" id="milestoneInputs">
-              <div class="milestone-row">
-                <input type="text" class="form-input" placeholder="Milestone name (e.g., Requirements Freeze)" />
-                <input type="date" class="form-input" />
-                <button class="btn-icon" onclick="addMilestone()">+</button>
-              </div>
-            </div>
-          </div>
+        <p class="text-sm">Copy this Context Bundle into your LLM prompt (Antigravity, Cursor, ChatGPT, Claude) to ensure strict adherence to the V-Model spec.</p>
+        <div class="modal-code-wrapper">
+          <pre><code id="modalBundleContent">Loading Context Bundle...</code></pre>
         </div>
       </div>
-
       <div class="modal-footer">
-        <button class="btn-secondary" id="modalBackBtn" onclick="modalBack()" style="display:none">← Back</button>
-        <div class="modal-step-info">Step <span id="currentModalStep">1</span> of 4</div>
-        <button class="btn-primary" id="modalNextBtn" onclick="modalNext()">Next →</button>
+        <button class="btn-secondary" onclick="closeModal('serveBundleModal')">Close</button>
+        <button class="btn-primary" onclick="copyContextBundleToClipboard()">Copy to Clipboard</button>
       </div>
     </div>
   </div>
 
-  <!-- ── DEFECT TRACKER VIEW ─────────────────────────────── -->
-  <section class="view" id="view-defects">
-    <div class="view-header">
-      <div>
-        <h1 class="view-title">Defect Tracker</h1>
-        <p class="view-subtitle">Log, classify and track defects across all V Model phases</p>
+  <!-- 2. ARTIFACT NODE INSPECTOR MODAL -->
+  <div class="modal-backdrop" id="nodeModal">
+    <div class="modal-dialog width-lg">
+      <div class="modal-header">
+        <h3 id="nodeModalTitle">Node Artifact Details</h3>
+        <button class="modal-close" onclick="closeModal('nodeModal')">&times;</button>
       </div>
-      <div class="header-actions">
-        <select class="select-filter" id="defectPhaseFilter" onchange="filterDefects()">
-          <option value="all">All Phases</option>
-          <option value="0">PH-01 Requirements</option>
-          <option value="1">PH-02 System Design</option>
-          <option value="2">PH-03 Component Design</option>
-          <option value="3">PH-04 Implementation</option>
-          <option value="4">PH-05 Unit Testing</option>
-          <option value="5">PH-06 Integration Testing</option>
-          <option value="6">PH-07 System Testing</option>
-          <option value="7">PH-08 Acceptance</option>
-        </select>
-        <select class="select-filter" id="defectSeverityFilter" onchange="filterDefects()">
-          <option value="all">All Severities</option>
-          <option value="critical">Critical</option>
-          <option value="major">Major</option>
-          <option value="minor">Minor</option>
-        </select>
-        <button class="btn-primary" onclick="openDefectForm()">+ Log Defect</button>
+      <div class="modal-body" id="nodeModalBody">
+        <!-- Populated dynamically by app.js -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeModal('nodeModal')">Close</button>
+        <button class="btn-primary" onclick="serveSelectedNodeBundle()">Serve Bundle for Node</button>
       </div>
     </div>
+  </div>
 
-    <!-- Defect Summary Bar -->
-    <div class="defect-summary" id="defectSummary">
-      <div class="ds-item critical"><span class="ds-num" id="ds-critical">0</span><span class="ds-label">Critical</span></div>
-      <div class="ds-item major"><span class="ds-num" id="ds-major">0</span><span class="ds-label">Major</span></div>
-      <div class="ds-item minor"><span class="ds-num" id="ds-minor">0</span><span class="ds-label">Minor</span></div>
-      <div class="ds-divider"></div>
-      <div class="ds-item open"><span class="ds-num" id="ds-open">0</span><span class="ds-label">Open</span></div>
-      <div class="ds-item inprog"><span class="ds-num" id="ds-inprog">0</span><span class="ds-label">In Progress</span></div>
-      <div class="ds-item closed"><span class="ds-num" id="ds-closed">0</span><span class="ds-label">Closed</span></div>
-      <div style="flex:1"></div>
-      <div class="ds-chart-wrap">
-        <canvas id="defectDonut" width="80" height="80"></canvas>
+  <!-- 3. NEW PROJECT MODAL -->
+  <div class="modal-backdrop" id="newProjectModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3>Create New V-Model Project</h3>
+        <button class="modal-close" onclick="closeModal('newProjectModal')">&times;</button>
       </div>
-    </div>
-
-    <!-- Defect Form (inline) -->
-    <div class="defect-form-panel" id="defectFormPanel" style="display:none">
-      <div class="dfp-header">
-        <h3>Log New Defect</h3>
-        <button class="pp-close" onclick="closeDefectForm()">×</button>
-      </div>
-      <div class="dfp-body">
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Title</label>
-            <input type="text" class="form-input" id="defTitle" placeholder="Short defect description" />
-          </div>
-          <div class="form-group">
-            <label class="form-label">Phase Found</label>
-            <select class="form-select" id="defPhase">
-              <option value="0">PH-01 Requirements</option>
-              <option value="1">PH-02 System Design</option>
-              <option value="2">PH-03 Component Design</option>
-              <option value="3">PH-04 Implementation</option>
-              <option value="4">PH-05 Unit Testing</option>
-              <option value="5">PH-06 Integration</option>
-              <option value="6">PH-07 System Testing</option>
-              <option value="7">PH-08 Acceptance</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Severity</label>
-            <select class="form-select" id="defSeverity">
-              <option value="critical">Critical — Safety impact / blocks release</option>
-              <option value="major">Major — Significant functional impact</option>
-              <option value="minor">Minor — Cosmetic / low impact</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Category</label>
-            <select class="form-select" id="defCategory">
-              <option value="requirements">Requirements Gap</option>
-              <option value="design">Design Error</option>
-              <option value="implementation">Implementation Bug</option>
-              <option value="integration">Integration Failure</option>
-              <option value="safety">Safety Violation</option>
-              <option value="traceability">Traceability Gap</option>
-            </select>
-          </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Project Name:</label>
+          <input type="text" id="newProjName" placeholder="e.g. Autonomous Radar Controller" />
         </div>
         <div class="form-group">
-          <label class="form-label">Description / Steps to Reproduce</label>
-          <textarea class="form-textarea" id="defDesc" rows="2" placeholder="Detailed description, expected vs actual behavior..."></textarea>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Linked Requirement ID</label>
-            <input type="text" class="form-input" id="defReqId" placeholder="e.g., REQ-ADAS-001" />
-          </div>
-          <div class="form-group">
-            <label class="form-label">Assigned To</label>
-            <input type="text" class="form-input" id="defAssignee" placeholder="Engineer name / team" />
-          </div>
-        </div>
-        <div style="display:flex;gap:10px;margin-top:4px">
-          <button class="btn-primary" onclick="submitDefect()">Log Defect</button>
-          <button class="btn-secondary" onclick="closeDefectForm()">Cancel</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Defect Table -->
-    <div class="defect-table-wrap" id="defectTableWrap">
-      <div class="empty-state large" id="defectEmpty">
-        <div class="es-icon">
-          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="24" cy="24" r="20"/><path d="M24 14v10M24 32h.01"/></svg>
-        </div>
-        <p>No defects logged. Click <strong>+ Log Defect</strong> to add one.</p>
-      </div>
-      <table class="defect-table" id="defectTable" style="display:none">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>Phase</th>
-            <th>Severity</th>
-            <th>Category</th>
-            <th>Status</th>
-            <th>Assignee</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="defectTbody"></tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- ── GATE REVIEW MODAL ────────────────────────────────── -->
-  <div class="modal-overlay" id="gateModal">
-    <div class="modal gate-modal">
-      <div class="modal-header">
-        <div class="modal-title-area">
-          <div class="modal-icon" style="background:linear-gradient(135deg,#fb923c,#f43f5e)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
-          </div>
-          <div>
-            <h2 class="modal-title">Phase Gate Review</h2>
-            <p class="modal-subtitle" id="gateModalSubtitle">Exit criteria for current phase</p>
-          </div>
-        </div>
-        <button class="modal-close" onclick="closeGateModal()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
-      <div class="modal-body" id="gateModalBody" style="max-height:70vh">
-        <!-- Rendered by JS -->
-      </div>
-      <div class="modal-footer">
-        <div class="gate-result" id="gateResult"></div>
-        <button class="btn-secondary" onclick="closeGateModal()">Close</button>
-        <button class="btn-primary" id="gateAdvanceBtn" onclick="advancePhaseFromGate()" style="display:none">Advance to Next Phase →</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── EXPORT MODAL ─────────────────────────────────────── -->
-  <div class="modal-overlay" id="exportModal">
-    <div class="modal" style="max-width:520px">
-      <div class="modal-header">
-        <div class="modal-title-area">
-          <div class="modal-icon" style="background:linear-gradient(135deg,#34d399,#06b6d4)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v10M9 9l3 3 3-3M2 17v1a2 2 0 002 2h16a2 2 0 002-2v-1M7 17H2M17 17h5"/></svg>
-          </div>
-          <div>
-            <h2 class="modal-title">Export Report</h2>
-            <p class="modal-subtitle">Generate V Model project documentation</p>
-          </div>
-        </div>
-        <button class="modal-close" onclick="closeExportModal()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="export-options" id="exportOptions">
-          <div class="export-opt selected" data-fmt="html" onclick="selectExportFmt(this)">
-            <div class="export-opt-icon">📄</div>
-            <div class="export-opt-info">
-              <div class="export-opt-name">HTML Report</div>
-              <div class="export-opt-desc">Full interactive V Model status report</div>
-            </div>
-            <div class="export-opt-check">✓</div>
-          </div>
-          <div class="export-opt" data-fmt="csv" onclick="selectExportFmt(this)">
-            <div class="export-opt-icon">📊</div>
-            <div class="export-opt-info">
-              <div class="export-opt-name">CSV — Traceability Matrix</div>
-              <div class="export-opt-desc">Requirement → Design → Test mapping</div>
-            </div>
-            <div class="export-opt-check" style="opacity:0">✓</div>
-          </div>
-          <div class="export-opt" data-fmt="defects" onclick="selectExportFmt(this)">
-            <div class="export-opt-icon">🐛</div>
-            <div class="export-opt-info">
-              <div class="export-opt-name">CSV — Defect Log</div>
-              <div class="export-opt-desc">All defects with severity and status</div>
-            </div>
-            <div class="export-opt-check" style="opacity:0">✓</div>
-          </div>
-          <div class="export-opt" data-fmt="json" onclick="selectExportFmt(this)">
-            <div class="export-opt-icon">🗄️</div>
-            <div class="export-opt-info">
-              <div class="export-opt-name">JSON — Project Data</div>
-              <div class="export-opt-desc">Complete machine-readable project snapshot</div>
-            </div>
-            <div class="export-opt-check" style="opacity:0">✓</div>
-          </div>
-        </div>
-        <div class="form-group" style="margin-top:16px">
-          <label class="form-label">Include Sections</label>
-          <div class="checkbox-group">
-            <label class="checkbox-item"><input type="checkbox" id="exp-phases" checked /> Phase status & task completion</label>
-            <label class="checkbox-item"><input type="checkbox" id="exp-trace" checked /> Traceability matrix</label>
-            <label class="checkbox-item"><input type="checkbox" id="exp-defects" checked /> Defect log</label>
-            <label class="checkbox-item"><input type="checkbox" id="exp-risks" checked /> Risk flags</label>
-            <label class="checkbox-item"><input type="checkbox" id="exp-timeline" /> Timeline & milestones</label>
-          </div>
+          <label>Regulatory Safety Standard:</label>
+          <select id="newProjStandard">
+            <option value="IEC 62304 (CLASS C / CLASS B)">IEC 62304 (Medical Class C / B)</option>
+            <option value="ISO 26262 (ASIL-D)">ISO 26262 (Automotive ASIL-D)</option>
+            <option value="DO-178C (DAL-A)">DO-178C (Aerospace DAL-A)</option>
+            <option value="ISO 14971 / 62304">ISO 14971 + IEC 62304</option>
+          </select>
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn-secondary" onclick="closeExportModal()">Cancel</button>
-        <button class="btn-primary" onclick="runExport()">
-          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;margin-right:6px"><path d="M8 2v8M5 7l3 3 3-3M2 12v1a1 1 0 001 1h10a1 1 0 001-1v-1"/></svg>
-          Download
-        </button>
+        <button class="btn-secondary" onclick="closeModal('newProjectModal')">Cancel</button>
+        <button class="btn-primary" onclick="createNewProject()">Create Project</button>
       </div>
     </div>
   </div>
 
-  <!-- Phase Detail Popup for mini v-model -->
-  <div class="phase-popup" id="phasePopup" style="display:none">
-    <div class="pp-header">
-      <span class="pp-badge" id="ppBadge"></span>
-      <button class="pp-close" onclick="closePhasePopup()">×</button>
-    </div>
-    <h4 id="ppTitle"></h4>
-    <p id="ppDesc"></p>
-    <div class="pp-status" id="ppStatus"></div>
-  </div>
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
 
+  <!-- Main JavaScript File -->
   <script src="app.js"></script>
-  <script src="extensions.js"></script>
 </body>
 </html>
