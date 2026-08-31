@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="vibrant">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,16 +9,28 @@
   <!-- Google Fonts: Newsreader (Serif), JetBrains Mono (Monospace), Inter (Sans) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
+  <!-- Ambient Glowing Background Orbs & Cosmic Grid -->
+  <div class="ambient-background">
+    <div class="ambient-orb orb-purple"></div>
+    <div class="ambient-orb orb-blue"></div>
+    <div class="ambient-orb orb-red"></div>
+    <div class="cosmic-grid-overlay"></div>
+  </div>
+
   <!-- Top Header Area -->
   <header class="app-header">
     <div class="header-left">
       <div class="brand-row">
+        <!-- Logo SVG Icon -->
+        <div class="brand-logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
         <h1 class="brand-title">V-PATH.AGENT</h1>
         <span class="version-badge">V4.2</span>
       </div>
@@ -28,7 +40,10 @@
     <div class="header-right">
       <!-- Active Project Selector Box -->
       <div class="project-selector-container">
-        <label class="project-label">ACTIVE PROJECT</label>
+        <label class="project-label">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+          ACTIVE PROJECT
+        </label>
         <div class="project-select-wrapper">
           <select id="projectSelect" onchange="onProjectChange(this.value)">
             <option value="insulin">Smart Insulin Infusion Pump (IEC 62304)</option>
@@ -40,19 +55,35 @@
         </div>
       </div>
 
-      <!-- Header Status Badges -->
+      <!-- Header Status Badges & Theme Switcher -->
       <div class="header-badges">
+        <!-- COLOR THEME SWITCHER -->
+        <div class="badge-pill theme-selector-pill" title="Change Visual Color Theme">
+          <svg class="pill-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a7 7 0 000 14 7 7 0 000-14z"/></svg>
+          <select id="themeSelect" onchange="changeTheme(this.value)">
+            <option value="vibrant" selected>Vibrant Tech</option>
+            <option value="cyber">Cyber Dark Mode</option>
+            <option value="classic">Classic Editorial</option>
+          </select>
+        </div>
+
         <div class="badge-pill compliance-pill" id="complianceBadge">
+          <svg class="pill-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           <span class="pill-text">IEC 62304 (CLASS C / CLASS B)</span>
         </div>
+
         <div class="badge-pill trace-pill" id="traceBadge">
+          <svg class="pill-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
           <span class="pill-text">TRACE <em>100%</em> <small>(48/48)</small></span>
         </div>
+
         <div class="badge-pill model-pill" onclick="openModelSelectModal()" title="Switch AI Agent Model">
           <span class="status-dot green"></span>
+          <svg class="pill-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6v6H9z"/></svg>
           <span class="model-name" id="selectedModelName">Gemini 3.7</span>
           <svg class="chevron-down" viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><path d="M4 6l4 4 4-4H4z"/></svg>
         </div>
+
         <button class="btn-serve-bundle" onclick="openServeBundleModal()">
           <svg class="chip-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="4" y="4" width="16" height="16" rx="2" />
@@ -65,29 +96,40 @@
     </div>
   </header>
 
-  <!-- Top Navigation Tabs -->
+  <!-- Top Navigation Tabs with High-Quality Vector SVG Icons -->
   <nav class="nav-tabs-bar">
     <div class="nav-tabs-list">
       <button class="nav-tab active" data-tab="vmodel" onclick="switchTab('vmodel')">
+        <svg class="tab-svg-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3l9 18 9-18"/><circle cx="12" cy="21" r="2" fill="currentColor"/></svg>
         V-Model Diagram
       </button>
+
       <button class="nav-tab" data-tab="bundle" onclick="switchTab('bundle')">
+        <svg class="tab-svg-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
         Context Bundle Engine
         <span class="tab-badge red-badge" id="bundleCountBadge">1</span>
       </button>
+
       <button class="nav-tab" data-tab="traceability" onclick="switchTab('traceability')">
+        <svg class="tab-svg-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
         Traceability Matrix
         <span class="tab-badge green-badge">100%</span>
       </button>
+
       <button class="nav-tab" data-tab="sandbox" onclick="switchTab('sandbox')">
+        <svg class="tab-svg-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 2v7.5M14 2v7.5M8.5 2h7M14 9.5a5 5 0 11-4 0v-7.5"/></svg>
         AI Agent Sandbox
         <span class="tab-badge dark-badge">SIMULATOR</span>
       </button>
+
       <button class="nav-tab" data-tab="compliance" onclick="switchTab('compliance')">
+        <svg class="tab-svg-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
         Compliance Audits
       </button>
+
       <button class="nav-tab" data-tab="help" onclick="switchTab('help')">
-        ? Layman User Guide
+        <svg class="tab-svg-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.663 17h4.673M12 3a7 7 0 00-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 001 1h6a1 1 0 001-1v-1.26c1.81-1.27 3-3.36 3-5.74a7 7 0 00-7-7z"/></svg>
+        Layman User Guide
       </button>
     </div>
     <div class="nav-extra-actions">
@@ -101,7 +143,7 @@
   <!-- MAIN CONTENT VIEWS CONTAINER -->
   <main class="main-views-container">
 
-    <!-- VIEW 1: V-MODEL DIAGRAM (Exact match to uploaded screenshot) -->
+    <!-- VIEW 1: V-MODEL DIAGRAM -->
     <section class="tab-view active" id="view-vmodel">
       <!-- Diagram Banner / Header -->
       <div class="diagram-header-panel">
@@ -114,13 +156,13 @@
         </div>
         <div class="dh-right-legend">
           <button class="legend-btn left-btn" onclick="highlightBranch('left')">
-            <span class="sq-icon">■</span> LEFT: SPECIFICATION
+            <span class="sq-icon blue-sq">■</span> LEFT: SPECIFICATION
           </button>
           <button class="legend-btn vertex-btn" onclick="highlightBranch('vertex')">
-            <span class="sq-icon">■</span> VERTEX: CODE
+            <span class="sq-icon red-sq">■</span> VERTEX: CODE
           </button>
           <button class="legend-btn right-btn" onclick="highlightBranch('right')">
-            <span class="sq-icon">■</span> RIGHT: VERIFICATION
+            <span class="sq-icon green-sq">■</span> RIGHT: VERIFICATION
           </button>
         </div>
       </div>
@@ -132,11 +174,14 @@
         <div class="vmodel-grid">
           <!-- LEFT SIDE: SPECIFICATION & DECOMPOSITION BRANCH -->
           <div class="vmodel-column left-branch">
-            <div class="column-title">SPECIFICATION (DECOMPOSITION)</div>
+            <div class="column-title blue-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              SPECIFICATION (DECOMPOSITION)
+            </div>
             
             <div class="vmodel-node-card left-node" id="node-SYS1" data-node="SYS1" onclick="onNodeClick('SYS1')">
               <div class="node-header">
-                <span class="node-id">SYS.1</span>
+                <span class="node-id blue-id">SYS.1</span>
                 <span class="node-tier">TIER 1 — SYSTEM</span>
               </div>
               <div class="node-title">System Requirements Specification</div>
@@ -149,7 +194,7 @@
 
             <div class="vmodel-node-card left-node" id="node-SYS2" data-node="SYS2" onclick="onNodeClick('SYS2')">
               <div class="node-header">
-                <span class="node-id">SYS.2</span>
+                <span class="node-id blue-id">SYS.2</span>
                 <span class="node-tier">TIER 2 — ARCHITECTURE</span>
               </div>
               <div class="node-title">System Architecture & Safety Concept</div>
@@ -162,7 +207,7 @@
 
             <div class="vmodel-node-card left-node" id="node-SW1" data-node="SW1" onclick="onNodeClick('SW1')">
               <div class="node-header">
-                <span class="node-id">SW.1</span>
+                <span class="node-id blue-id">SW.1</span>
                 <span class="node-tier">TIER 3 — SOFTWARE REQS</span>
               </div>
               <div class="node-title">Software Requirements Specification (SRS)</div>
@@ -175,7 +220,7 @@
 
             <div class="vmodel-node-card left-node" id="node-SW2" data-node="SW2" onclick="onNodeClick('SW2')">
               <div class="node-header">
-                <span class="node-id">SW.2</span>
+                <span class="node-id blue-id">SW.2</span>
                 <span class="node-tier">TIER 4 — UNIT SPEC</span>
               </div>
               <div class="node-title">Software Architectural & Detailed Unit Design</div>
@@ -189,12 +234,15 @@
 
           <!-- VERTEX CENTER: IMPLEMENTATION / CODE -->
           <div class="vmodel-column vertex-branch">
-            <div class="column-title">VERTEX (IMPLEMENTATION)</div>
+            <div class="column-title red-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              VERTEX (IMPLEMENTATION)
+            </div>
             
             <div class="vmodel-node-card vertex-node highlighted-vertex" id="node-SW4" data-node="SW4" onclick="onNodeClick('SW4')">
               <div class="vertex-badge">CORE IMPLEMENTATION</div>
               <div class="node-header">
-                <span class="node-id">SW.4</span>
+                <span class="node-id red-id">SW.4</span>
                 <span class="node-tier">VERTEX — CODE</span>
               </div>
               <div class="node-title">Software Code Implementation (C/C++)</div>
@@ -212,11 +260,14 @@
 
           <!-- RIGHT SIDE: VERIFICATION & TESTING BRANCH -->
           <div class="vmodel-column right-branch">
-            <div class="column-title">VERIFICATION (TESTING)</div>
+            <div class="column-title green-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              VERIFICATION (TESTING)
+            </div>
 
             <div class="vmodel-node-card right-node" id="node-SW5" data-node="SW5" onclick="onNodeClick('SW5')">
               <div class="node-header">
-                <span class="node-id">SW.5</span>
+                <span class="node-id green-id">SW.5</span>
                 <span class="node-tier">VERIFICATION 1</span>
               </div>
               <div class="node-title">Software Unit Verification & Code Testing</div>
@@ -229,7 +280,7 @@
 
             <div class="vmodel-node-card right-node" id="node-SW6" data-node="SW6" onclick="onNodeClick('SW6')">
               <div class="node-header">
-                <span class="node-id">SW.6</span>
+                <span class="node-id green-id">SW.6</span>
                 <span class="node-tier">VERIFICATION 2</span>
               </div>
               <div class="node-title">Software Integration & Integration Testing</div>
@@ -242,7 +293,7 @@
 
             <div class="vmodel-node-card right-node" id="node-SYS4" data-node="SYS4" onclick="onNodeClick('SYS4')">
               <div class="node-header">
-                <span class="node-id">SYS.4</span>
+                <span class="node-id green-id">SYS.4</span>
                 <span class="node-tier">VERIFICATION 3</span>
               </div>
               <div class="node-title">System Verification & Hardware Integration</div>
@@ -255,7 +306,7 @@
 
             <div class="vmodel-node-card right-node" id="node-SYS5" data-node="SYS5" onclick="onNodeClick('SYS5')">
               <div class="node-header">
-                <span class="node-id">SYS.5</span>
+                <span class="node-id green-id">SYS.5</span>
                 <span class="node-tier">VERIFICATION 4</span>
               </div>
               <div class="node-title">System Acceptance & Clinical/Safety Validation</div>
@@ -413,7 +464,7 @@
       </div>
     </section>
 
-    <!-- VIEW 4: AI AGENT SANDBOX (Interactive Demonstration) -->
+    <!-- VIEW 4: AI AGENT SANDBOX -->
     <section class="tab-view" id="view-sandbox">
       <div class="view-header-row">
         <div>
@@ -591,7 +642,9 @@ DoseResult_t Calculate_Bolus_Dose(const GlucoseReading_t* const reading) {
       <div class="help-analogies-grid">
         <div class="analogy-card">
           <div class="analogy-header">
-            <span class="analogy-icon">🏗️</span>
+            <div class="analogy-svg-icon blue-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M6 21V11M10 21V11M14 21V11M18 21V11M12 3L2 7h20l-10-4z"/></svg>
+            </div>
             <h3>Analogy #1: The High-Tech House (What is the V-Model?)</h3>
           </div>
           <p class="analogy-text">
@@ -620,7 +673,9 @@ DoseResult_t Calculate_Bolus_Dose(const GlucoseReading_t* const reading) {
 
         <div class="analogy-card">
           <div class="analogy-header">
-            <span class="analogy-icon">🍕</span>
+            <div class="analogy-svg-icon red-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zM12 6v6l4 2"/></svg>
+            </div>
             <h3>Analogy #2: Ordering Pizza (Why AI Needs Context Bundles)</h3>
           </div>
           <p class="analogy-text">

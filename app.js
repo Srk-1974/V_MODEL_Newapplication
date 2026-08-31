@@ -9,7 +9,8 @@ const APP_STATE = {
   selectedProject: 'insulin',
   selectedNode: 'SYS1',
   selectedModel: 'Gemini 3.7',
-  highlightBranch: null
+  highlightBranch: null,
+  activeTheme: 'vibrant'
 };
 
 // ── PROJECT DATABASE & ARTIFACT TRACE MODELS ──────────────
@@ -195,6 +196,14 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', setupSVGConnections);
 });
 
+// ── COLOR THEME SWITCHER ──────────────────────────────────
+function changeTheme(themeName) {
+  APP_STATE.activeTheme = themeName;
+  document.documentElement.setAttribute('data-theme', themeName);
+  setTimeout(setupSVGConnections, 50);
+  showToast(`Switched theme to: ${themeName.toUpperCase()}`);
+}
+
 // ── NAVIGATION & TAB SWITCHING ────────────────────────────
 function switchTab(tabId) {
   APP_STATE.activeTab = tabId;
@@ -241,11 +250,12 @@ function setupSVGConnections() {
   svg.setAttribute('height', wRect.height);
   svg.innerHTML = ''; // Clear existing SVG paths
 
+  const isCyber = APP_STATE.activeTheme === 'cyber';
   const bridges = [
-    { left: 'SYS1', right: 'SYS5', color: '#111111' },
-    { left: 'SYS2', right: 'SYS4', color: '#111111' },
-    { left: 'SW1',  right: 'SW6',  color: '#111111' },
-    { left: 'SW2',  right: 'SW5',  color: '#D93838' } // Highlight SW2-SW5 Bridge
+    { left: 'SYS1', right: 'SYS5', color: isCyber ? '#38BDF8' : '#0284C7' },
+    { left: 'SYS2', right: 'SYS4', color: isCyber ? '#38BDF8' : '#0284C7' },
+    { left: 'SW1',  right: 'SW6',  color: isCyber ? '#38BDF8' : '#0284C7' },
+    { left: 'SW2',  right: 'SW5',  color: '#EF4444' } // Highlight SW2-SW5 Bridge in Crimson
   ];
 
   bridges.forEach(b => {
@@ -269,9 +279,9 @@ function setupSVGConnections() {
       path.setAttribute('d', d);
       path.setAttribute('fill', 'none');
       path.setAttribute('stroke', b.color);
-      path.setAttribute('stroke-width', b.color === '#D93838' ? '2.5' : '1.5');
-      path.setAttribute('stroke-dasharray', b.color === '#D93838' ? '4,4' : '6,6');
-      path.setAttribute('opacity', '0.6');
+      path.setAttribute('stroke-width', b.color === '#EF4444' ? '3' : '2');
+      path.setAttribute('stroke-dasharray', b.color === '#EF4444' ? '5,5' : '6,6');
+      path.setAttribute('opacity', '0.85');
       svg.appendChild(path);
     }
   });
@@ -317,7 +327,7 @@ function openSelectedNodeModal() {
   }
 
   if (node.codeSnippet) {
-    html += `<h4>Traced Vertex Code:</h4><pre style="background:var(--bg-dark); color:#fff; padding:0.75rem; font-family:var(--font-mono); font-size:0.78rem;"><code>${escapeHtml(node.codeSnippet)}</code></pre>`;
+    html += `<h4>Traced Vertex Code:</h4><pre style="background:#0F172A; color:#fff; padding:0.75rem; font-family:var(--font-mono); font-size:0.78rem;"><code>${escapeHtml(node.codeSnippet)}</code></pre>`;
   }
 
   html += `</div>`;
@@ -531,7 +541,6 @@ function highlightBranch(branchType) {
 }
 
 function renderVModelDiagram() {
-  // Re-sync V-Model state if needed
   onNodeClick('SYS1');
 }
 
