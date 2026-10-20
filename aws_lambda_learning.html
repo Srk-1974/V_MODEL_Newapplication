@@ -921,6 +921,39 @@
       font-size: 0.78rem;
       color: var(--text-muted);
       font-family: var(--font-mono);
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .lang-tabs {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .lang-tab-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-muted);
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: var(--font-sans);
+    }
+
+    .lang-tab-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .lang-tab-btn.active {
+      background: var(--aws-orange);
+      color: #0b0f19;
+      font-weight: 800;
+      border-color: var(--aws-orange);
     }
 
     .copy-btn {
@@ -1541,7 +1574,7 @@
           <span><strong>Difficulty:</strong> Beginner to Intermediate</span>
           <span><strong>Time to Build:</strong> ~35 minutes</span>
           <span><strong>Cost:</strong> $0.00 (100% Free Tier Eligible)</span>
-          <span><strong>Language:</strong> Python 3.12 (boto3)</span>
+          <span><strong>Languages:</strong> Python 3.12 & Node.js 20.x (Dual Code Lab)</span>
         </div>
       </div>
 
@@ -1652,26 +1685,33 @@
               <div class="step-circle">3</div>
               <div>
                 <div class="step-card-title">Step 3: Write the Production Lambda Handler Code</div>
-                <div class="step-card-summary">Python 3.12 script using boto3 and stateless image resizing</div>
+                <div class="step-card-summary">Production-ready scripts in Python 3.12 (boto3) and Node.js 20.x (AWS SDK v3)</div>
               </div>
             </div>
             <div class="step-arrow">▼</div>
           </div>
           <div class="step-card-body">
             <div class="step-instruction">
-              Here is the production-ready Python handler. Notice that we instantiate the AWS SDK clients (`s3_client`, `dynamo_client`) <strong>outside</strong> the `lambda_handler` function. This takes advantage of execution environment reuse across warm invocations!
+              Here are the production-ready handlers for both <strong>Python</strong> and <strong>Node.js</strong>. Notice that in both languages, we instantiate the AWS SDK clients <strong>outside</strong> the handler function. This takes advantage of execution environment reuse across warm invocations!
             </div>
+
+            <!-- Code Box with Language Tabs -->
             <div class="code-box">
               <div class="code-bar">
-                <span>lambda_function.py (Python 3.12)</span>
-                <button class="copy-btn" onclick="copySnippet('pythonCode')">Copy Python</button>
+                <div class="lang-tabs">
+                  <button class="lang-tab-btn active" id="btnLangPython" onclick="switchLang('python')">🐍 Python 3.12 (boto3)</button>
+                  <button class="lang-tab-btn" id="btnLangNode" onclick="switchLang('node')">🟢 Node.js 20.x (AWS SDK v3)</button>
+                </div>
+                <button class="copy-btn" id="copyLangBtn" onclick="copyActiveCode()">Copy Code</button>
               </div>
-              <pre><code id="pythonCode"><span class="token-kw">import</span> json
+
+              <!-- Python Code Block -->
+              <pre id="codeBlockPython"><code id="pythonCode"><span class="token-kw">import</span> json
 <span class="token-kw">import</span> urllib.parse
 <span class="token-kw">import</span> boto3
 <span class="token-kw">import</span> time
 
-<span class="token-comm"># Initialize SDK clients OUTSIDE the handler for performance optimization</span>
+<span class="token-comm"># Initialize SDK clients OUTSIDE the handler for connection reuse across warm starts</span>
 s3_client = boto3.client(<span class="token-str">'s3'</span>)
 dynamodb = boto3.resource(<span class="token-str">'dynamodb'</span>)
 table = dynamodb.Table(<span class="token-str">'ImageMetadata'</span>)
@@ -1712,14 +1752,85 @@ table = dynamodb.Table(<span class="token-str">'ImageMetadata'</span>)
     <span class="token-kw">return</span> {
         <span class="token-str">'statusCode'</span>: <span class="token-num">200</span>,
         <span class="token-str">'body'</span>: json.dumps({
-            <span class="token-str">'message'</span>: <span class="token-str">'Image processed successfully'</span>,
+            <span class="token-str">'message'</span>: <span class="token-str">'Image processed successfully via Python 3.12'</span>,
             <span class="token-str">'fileKey'</span>: file_key,
             <span class="token-str">'sizeBytes'</span>: file_size
         })
     }</code></pre>
+
+              <!-- Node.js Code Block -->
+              <pre id="codeBlockNode" style="display: none;"><code id="nodeCode"><span class="token-comm">// index.mjs — Node.js 20.x runtime (ESM format)</span>
+<span class="token-comm">// Note: @aws-sdk/* is BUILT-IN to AWS Lambda Node 18 & 20 runtimes! No npm install needed!</span>
+<span class="token-kw">import</span> { S3Client, HeadObjectCommand } <span class="token-kw">from</span> <span class="token-str">"@aws-sdk/client-s3"</span>;
+<span class="token-kw">import</span> { DynamoDBClient } <span class="token-kw">from</span> <span class="token-str">"@aws-sdk/client-dynamodb"</span>;
+<span class="token-kw">import</span> { DynamoDBDocumentClient, PutCommand } <span class="token-kw">from</span> <span class="token-str">"@aws-sdk/lib-dynamodb"</span>;
+
+<span class="token-comm">// 1. Initialize SDK clients OUTSIDE the handler for TCP socket reuse</span>
+<span class="token-kw">const</span> s3Client = <span class="token-kw">new</span> <span class="token-fn">S3Client</span>({});
+<span class="token-kw">const</span> ddbClient = <span class="token-kw">new</span> <span class="token-fn">DynamoDBClient</span>({});
+<span class="token-kw">const</span> docClient = DynamoDBDocumentClient.<span class="token-fn">from</span>(ddbClient);
+
+<span class="token-kw">export const</span> <span class="token-fn">handler</span> = <span class="token-kw">async</span> (event, context) => {
+  console.log(<span class="token-str">"Incoming S3 Event:"</span>, JSON.stringify(event, <span class="token-kw">null</span>, <span class="token-num">2</span>));
+
+  <span class="token-comm">// 2. Parse S3 Event records</span>
+  <span class="token-kw">const</span> record = event.Records?.[<span class="token-num">0</span>];
+  <span class="token-kw">if</span> (!record) {
+    <span class="token-kw">throw new</span> <span class="token-fn">Error</span>(<span class="token-str">"No S3 records found in event payload."</span>);
+  }
+
+  <span class="token-kw">const</span> bucketName = record.s3.bucket.name;
+  <span class="token-comm">// Decode URL-encoded key (spaces replaced by + or %20)</span>
+  <span class="token-kw">const</span> fileKey = decodeURIComponent(record.s3.object.key.replace(/\+/g, <span class="token-str">" "</span>));
+  <span class="token-kw">const</span> fileSize = record.s3.object.size || <span class="token-num">0</span>;
+
+  <span class="token-comm">// 3. Prevent recursive billing loops</span>
+  <span class="token-kw">if</span> (fileKey.startsWith(<span class="token-str">"thumbnails/"</span>)) {
+    console.log(<span class="token-str">"File is already in thumbnails folder. Skipping execution."</span>);
+    <span class="token-kw">return</span> { statusCode: <span class="token-num">200</span>, body: <span class="token-str">"Skipped recursive loop"</span> };
+  }
+
+  <span class="token-comm">// 4. Fetch image metadata from Amazon S3</span>
+  <span class="token-kw">const</span> headCmd = <span class="token-kw">new</span> <span class="token-fn">HeadObjectCommand</span>({
+    Bucket: bucketName,
+    Key: fileKey
+  });
+  <span class="token-kw">const</span> s3Meta = <span class="token-kw">await</span> s3Client.<span class="token-fn">send</span>(headCmd);
+  <span class="token-kw">const</span> contentType = s3Meta.ContentType || <span class="token-str">"image/jpeg"</span>;
+
+  <span class="token-comm">// 5. Persist indexed metadata into Amazon DynamoDB table</span>
+  <span class="token-kw">const</span> putCmd = <span class="token-kw">new</span> <span class="token-fn">PutCommand</span>({
+    TableName: <span class="token-str">"ImageMetadata"</span>,
+    Item: {
+      ImageId: fileKey,
+      Bucket: bucketName,
+      FileSize: fileSize,
+      ContentType: contentType,
+      UploadedAt: Math.<span class="token-fn">floor</span>(Date.<span class="token-fn">now</span>() / <span class="token-num">1000</span>),
+      Status: <span class="token-str">"PROCESSED"</span>
+    }
+  });
+
+  <span class="token-kw">await</span> docClient.<span class="token-fn">send</span>(putCmd);
+  console.log(<span class="token-str">`Successfully recorded metadata for ${fileKey} into DynamoDB!`</span>);
+
+  <span class="token-kw">return</span> {
+    statusCode: <span class="token-num">200</span>,
+    body: JSON.stringify({
+      message: <span class="token-str">"Image processed successfully via Node.js 20.x"</span>,
+      fileKey,
+      sizeBytes: fileSize
+    })
+  };
+};</code></pre>
             </div>
+
+            <div class="callout" style="border-left-color: #10b981; background: rgba(16, 185, 129, 0.08);">
+              <strong style="color: #34d399;">⚡ Student Pro Tip for Node.js:</strong> In Node.js 18.x and 20.x, AWS includes the <strong>AWS SDK v3</strong> natively in the Lambda execution environment. You can create an `index.mjs` file directly in the AWS Console without needing to run `npm install` or upload a zip file!
+            </div>
+
             <div class="callout">
-              <strong>⚠️ Anti-Pattern Alert:</strong> Notice line 21: `if file_key.startswith('thumbnails/'): return`. If your Lambda writes back to the exact same S3 bucket without a prefix check, it could trigger itself repeatedly in an infinite billing loop!
+              <strong>⚠️ Anti-Pattern Alert:</strong> Notice line check: `if (fileKey.startsWith('thumbnails/')) return`. If your Lambda writes back to the exact same S3 bucket without a prefix check, it could trigger itself repeatedly in an infinite billing loop!
             </div>
           </div>
         </div>
@@ -2176,6 +2287,46 @@ table = dynamodb.Table(<span class="token-str">'ImageMetadata'</span>)
         }
         renderQuestion();
       }
+    }
+
+    // Language Switcher for Code Samples
+    let activeLanguage = 'python';
+
+    function switchLang(lang) {
+      activeLanguage = lang;
+      const btnPy = document.getElementById('btnLangPython');
+      const btnNode = document.getElementById('btnLangNode');
+      const codePy = document.getElementById('codeBlockPython');
+      const codeNode = document.getElementById('codeBlockNode');
+
+      if (lang === 'python') {
+        btnPy.classList.add('active');
+        btnNode.classList.remove('active');
+        codePy.style.display = 'block';
+        codeNode.style.display = 'none';
+      } else {
+        btnNode.classList.add('active');
+        btnPy.classList.remove('active');
+        codeNode.style.display = 'block';
+        codePy.style.display = 'none';
+      }
+    }
+
+    function copyActiveCode() {
+      const codeElementId = (activeLanguage === 'python') ? 'pythonCode' : 'nodeCode';
+      const text = document.getElementById(codeElementId).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copyLangBtn');
+        const orig = btn.innerText;
+        btn.innerText = "✓ Copied " + (activeLanguage === 'python' ? 'Python!' : 'Node.js!');
+        btn.style.background = "#10b981";
+        btn.style.color = "#0b0f19";
+        setTimeout(() => {
+          btn.innerText = orig;
+          btn.style.background = "";
+          btn.style.color = "";
+        }, 2000);
+      });
     }
 
     // Initialize Simulator and Quiz on load
